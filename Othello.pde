@@ -1,6 +1,11 @@
 /////////////////////////////////////////
 // By: Kat Sullivan
-////////////////////////////////////////
+/////////////////////////////////////////
+import processing.serial.*;  // import the Processing serial library
+
+Serial myPort;  // the serial port
+boolean firstContact = false;  // used for handshake method when communication with the Arduino
+
 PrintWriter output;
 
 String[] weights;
@@ -13,6 +18,11 @@ boolean userPressed = false;
 
 
 void setup() {
+  String portName = "COM4";
+  myPort = new Serial(this, portName, 9600);
+  // read incoming bytes to a buffer until you get a linefedd(ASCII 10)
+  myPort.bufferUntil('\n');
+  
   weights = loadStrings("weights.txt");
   output = createWriter("data/weights.txt");  
   player1 = new AIPlayer("Black", true, weights);
@@ -100,3 +110,31 @@ void drawBoard() {
     }
   }
 }
+
+void serialEvent(Serial myPort) {
+  // read the serial buffer
+  String myString = myPort.readStringUntil('\n');
+  if(myString != null){
+    myString = trim(myString);
+    
+    // if you haven't heard from the microcontroller yet, listen
+    if(firstContact == false) {
+      if(myString.equals("hello")) {
+        myPort.clear();          // clear the serial port buffer
+        firstContact = true;     // you've had first contact from the microcontroller
+        myPort.write(board.toString());       // ask for more, and send values for board
+      }
+    }
+    // if you have heard from the microcontroller, proceed
+    else {
+      // split the string at the commas and convert the sections into integers
+      //int sensors[][] = int(split(myString, ' '));
+      
+      // stuff
+    }
+    // when you've parsed the data you have, ask for more
+    myPort.write(board.toString());
+  }
+}
+        
+  
