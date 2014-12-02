@@ -7,17 +7,17 @@ public class AIPlayer extends Player
   //used for the linear function approximation
   private double[][] featureVector = new double[8][2];//the second double tells the user whether
   //it's for the current board or the board with a move
-  // double[] weightVector = {
-  //   3.226337608403137, 
-  //   4.486854233577422, 
-  //   5.83624728137885, 
-  //   6.5096211433410645, 
-  //   2.2986394602593334, 
-  //   1.367803291625127, 
-  //   1.6891207315180974, 
-  //   -7.215159227568421
-  // };  
-  double[] weightVector = new double[8];
+  double[] weightVector = {
+    3.226337608403137, 
+    4.486854233577422, 
+    5.83624728137885, 
+    6.5096211433410645, 
+    2.2986394602593334, 
+    1.367803291625127, 
+    1.6891207315180974, 
+    -7.215159227568421
+  };  
+  //double[] weightVector = new double[8];
 
   private boolean firstMove = true;
 
@@ -35,11 +35,11 @@ public class AIPlayer extends Player
   public AIPlayer(String n, boolean playing, String[] weights)
   {
     super(n, playing);
-    Double weight;
-    for (int i=0; i<8; i++) {
-      weight = Double.parseDouble(weights[i]);
-      weightVector[i] = weight;
-    }
+    // Double weight;
+    // for (int i=0; i<8; i++) {
+    //   weight = Double.parseDouble(weights[i]);
+    //   weightVector[i] = weight;
+    // }
   }
 
   public Move getRLMove() {
