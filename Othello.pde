@@ -122,7 +122,8 @@ void serialEvent(Serial myPort) {
       if(myString.equals("hello")) {
         myPort.clear();          // clear the serial port buffer
         firstContact = true;     // you've had first contact from the microcontroller
-        myPort.write(board.toString());       // ask for more, and send values for board
+        myPort.write(board.toStringArduino());       // ask for more, and send values for board
+        myPort.write('$');
       }
     }
     // if you have heard from the microcontroller, proceed
@@ -133,7 +134,8 @@ void serialEvent(Serial myPort) {
       // stuff
     }
     // when you've parsed the data you have, ask for more
-    myPort.write(board.toString());
+    myPort.write(board.toStringArduino());
+    myPort.write('$');
   }
 }
         

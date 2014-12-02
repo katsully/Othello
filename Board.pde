@@ -976,4 +976,16 @@ public class Board
 
     return s1;
   }
+  
+  public String toStringArduino()
+  {
+    String s1="";
+
+    for (int i=0; i<8; i++)
+    {
+      for (int j=0; j<8; j++)
+        s1 += (grid[i][j]);
+    }
+    return s1;
+  }
 }
