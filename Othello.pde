@@ -42,6 +42,7 @@ void setup() {
 }
 
 void draw() {
+  println(board.toString());
   if (board.gameOver(true)) {
     player1.updateWeights();
     for(int i=0; i<8; i++){
@@ -55,8 +56,10 @@ void draw() {
   if (player1.currentPlayer) {
     // QLearning will return true if there is a valid move available, if false
     // black will pass
+    delay(1000);
     if (player1.QLearning(board)) {
       board.RLblackMoves(player1.getRLMove().getRow(), player1.getRLMove().getCol(), true, true);
+      println(board.toString());
       drawBoard();
     } else { 
       player1.nxtPlayer();
@@ -66,16 +69,21 @@ void draw() {
   } else {
     if (userPressed) {      
       board.whiteMoves(playerX, playerY, true, true);
-      userPressed = false;
+      println(board.toString());
+      userPressed = false;      
     }
     drawBoard();
   }
 }  
 
 void mouseClicked() {
-  playerX = mouseX/100;
-  playerY = mouseY/100;
+  playerX = mouseY/100;
+  playerY = mouseX/100;
   userPressed = true;
+  println("mouse x " + mouseX);
+  println("x: " + playerX);
+  println("mouse y " + mouseY);
+  println("y: " + playerY);
 }
 
 void drawDisc(int x, int y, boolean black) {
@@ -84,10 +92,10 @@ void drawDisc(int x, int y, boolean black) {
   } else {
     fill(255);
   }
-  int xValue = x * 100 + 50;
-  int yValue = y * 100 + 50;
+  int xValue = y * 100 + 50;
+  int yValue = x * 100 + 50;
   noStroke();
-  ellipse(xValue, yValue, 80, 80);
+  ellipse(xValue, yValue, 80, 80);  
 }
 
 void drawBoard() {
@@ -108,7 +116,7 @@ void drawBoard() {
         drawDisc(row, col, false);
       }
     }
-  }
+  }  
 }
 
 void serialEvent(Serial myPort) {
@@ -123,6 +131,7 @@ void serialEvent(Serial myPort) {
         myPort.clear();          // clear the serial port buffer
         firstContact = true;     // you've had first contact from the microcontroller
         myPort.write(board.toStringArduino());       // ask for more, and send values for board
+        //println(board.toStringArduino());
         myPort.write('$');
       }
     }
@@ -135,6 +144,7 @@ void serialEvent(Serial myPort) {
     }
     // when you've parsed the data you have, ask for more
     myPort.write(board.toStringArduino());
+    //println(board.toStringArduino());
     myPort.write('$');
   }
 }
