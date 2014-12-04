@@ -41,7 +41,7 @@ void loop(){
           counter++;
         }  
       }
-      //} 
+       
       //else{
       // read in the hall effect sensors 
       readSensors();
@@ -54,7 +54,7 @@ void loop(){
         }
       }
       Serial.println();
-      delay(1500);
+      delay(300);
       //}
     }
   } 

@@ -9,7 +9,7 @@ boolean firstContact = false;  // used for handshake method when communication w
 PrintWriter output;
 
 String[] weights;
-AIPlayer player0;
+AIPlayer player1;
 Player player2;
 Board board;
 
@@ -59,9 +59,9 @@ void setup() {
 
   weights = loadStrings("weights.txt");
   output = createWriter("data/weights.txt");  
-  player0 = new AIPlayer("Black", true, weights);
+  player1 = new AIPlayer("Black", true, weights);
   player2 = new Player("White", false);
-  board = new Board(player0, player2);
+  board = new Board(player1, player2);
 
   board.bpieceOnBoard(3, 3, false);
   board.wpieceOnBoard(3, 4, false);
@@ -71,34 +71,35 @@ void setup() {
   println(board.toString());
 
   size(800, 800);
-  drawBoard();
+  drawBoard();  
 }
 
 void draw() {
   if (board.gameOver(true)) {
-    player0.updateWeights();
+    player1.updateWeights();
     for (int i=0; i<8; i++) {
-      output.println(player0.weightVector[i]);
+      output.println(player1.weightVector[i]);
     }
     println("END OF GAME");
     noLoop();
     output.flush();
     output.close();
   }
-  if (player0.currentPlayer) {
+  if (player1.currentPlayer) {
     // QLearning will return true if there is a valid move available, if false
     // black will pass
-    delay(0000);
-    if (player0.QLearning(board)) {
-      board.RLblackMoves(player0.getRLMove().getRow(), player0.getRLMove().getCol(), true, true);
+    delay(1000);
+    if (player1.QLearning(board)) {
+      board.RLblackMoves(player1.getRLMove().getRow(), player1.getRLMove().getCol(), true, true);
       drawBoard();
     } else { 
-      player0.nxtPlayer();
+      player1.nxtPlayer();
       player2.nxtPlayer();
       text("Black must pass", 20, 20);
     }
   } else {
     if (userPressed) {      
+      println("THE USER PRESSED");
       board.whiteMoves(playerX, playerY, true, true);
       //println(board.toString());
       userPressed = false;
@@ -108,8 +109,8 @@ void draw() {
 }  
 
 void mouseClicked() {
-  playerX = mouseY/000;
-  playerY = mouseX/000;
+  playerX = mouseY/100;
+  playerY = mouseX/100;
   userPressed = true;
 }
 
@@ -119,8 +120,8 @@ void drawDisc(int x, int y, boolean black) {
   } else {
     fill(255);
   }
-  int xValue = y * 000 + 50;
-  int yValue = x * 000 + 50;
+  int xValue = y * 100 + 50;
+  int yValue = x * 100 + 50;
   noStroke();
   ellipse(xValue, yValue, 80, 80);
 }
@@ -129,10 +130,10 @@ void drawBoard() {
   background(0, 255, 0);
   stroke(0);
   strokeWeight(4);
-  for (int i=000; i<width; i+=000) {
+  for (int i=100; i<width; i+=100) {
     line(i, 0, i, height);
   }
-  for (int i=000; i<height; i+=000) {
+  for (int i=100; i<height; i+=100) {
     line(0, i, width, i);
   }
   for (int row=0; row<8; row++) {
@@ -166,8 +167,8 @@ void serialEvent(Serial myPort) {
     // if you have heard from the microcontroller, proceed
     else {
       // split the string at the commas and convert the sections into integers
-      println("IN THE ELSE STATEMENT");
-      println(myString);
+      //println("IN THE ELSE STATEMENT");
+      //println(myString);
       int sensorPositions[] = int(split(myString, ','));
       int counter = 0;
       for(int i=0;i<8;i++){
@@ -191,12 +192,17 @@ void serialEvent(Serial myPort) {
 void addedPiecePosition(){
   for(int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-      //if(newSensorValues[i][j] != sensorValues[i][j]){
+      if(newSensorValues[i][j] != sensorValues[i][j]){
+        println("HERE");
+        println("x " + i);
+        println("y " + j);
         playerX = i;
         playerY = j;
         sensorValues = newSensorValues;
         userPressed = true;
-      //}
+        draw();
+        break;
+      }
     }
   }
 }
