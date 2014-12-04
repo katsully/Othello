@@ -99,7 +99,6 @@ void draw() {
     }
   } else {
     if (userPressed) {      
-      println("THE USER PRESSED");
       board.whiteMoves(playerX, playerY, true, true);
       //println(board.toString());
       userPressed = false;
@@ -190,6 +189,7 @@ void serialEvent(Serial myPort) {
 }
 
 void addedPiecePosition(){
+  //println("ADDED PIECE");
   for(int i=0; i<8; i++){
     for(int j=0; j<8; j++){
       if(newSensorValues[i][j] != sensorValues[i][j]){
@@ -198,11 +198,13 @@ void addedPiecePosition(){
         println("y " + j);
         playerX = i;
         playerY = j;
-        sensorValues = newSensorValues;
+        sensorValues[i][j] = newSensorValues[i][j];
         userPressed = true;
         draw();
         break;
       }
     }
   }
+  println("new sensor " + newSensorValues[1][4]);
+  println("old sensor " + sensorValues[1][4]);
 }
