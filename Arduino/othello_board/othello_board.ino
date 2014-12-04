@@ -41,8 +41,7 @@ void loop(){
           counter++;
         }  
       }
-       
-      //else{
+    //}else{
       // read in the hall effect sensors 
       readSensors();
       // send values of all sensors to Processing
@@ -55,15 +54,14 @@ void loop(){
       }
       Serial.println();
       delay(300);
-      //}
     }
   } 
 }
 
 void lightLED(int row, int col, char color){
-//  Serial.print(row);
-//  Serial.print(col);
-//  Serial.println(color);
+  //  Serial.print(row);
+  //  Serial.print(col);
+  //  Serial.println(color);
   if(color == '1'){
     //Serial.println(row, col);
     matrix.drawPixel(row, col, LED_GREEN);
@@ -99,6 +97,7 @@ void establishContact() {
     delay(311);
   }
 }
+
 
 
 
