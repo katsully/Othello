@@ -100,7 +100,6 @@ void draw() {
   } else {
     if (userPressed) {      
       board.whiteMoves(playerX, playerY, true, true);
-      //println(board.toString());
       userPressed = false;
     }
     drawBoard();
@@ -159,15 +158,12 @@ void serialEvent(Serial myPort) {
         firstContact = true;     // you've had first contact from the microcontroller
         myPort.write('A');
         myPort.write(board.toStringArduino());       // ask for more, and send values for board
-        //println(board.toStringArduino());
         myPort.write('$');
       }
     }
     // if you have heard from the microcontroller, proceed
     else {
       // split the string at the commas and convert the sections into integers
-      //println("IN THE ELSE STATEMENT");
-      //println(myString);
       int sensorPositions[] = int(split(myString, ','));
       int counter = 0;
       for(int i=0;i<8;i++){
@@ -183,28 +179,20 @@ void serialEvent(Serial myPort) {
     // when you've parsed the data you have, ask for more
     myPort.write('A');
     myPort.write(board.toStringArduino());
-    //println(board.toStringArduino());
     myPort.write('$');
   }
 }
 
 void addedPiecePosition(){
-  //println("ADDED PIECE");
   for(int i=0; i<8; i++){
     for(int j=0; j<8; j++){
-      if(newSensorValues[i][j] != sensorValues[i][j]){
-        println("HERE");
-        println("x " + i);
-        println("y " + j);
+      if(newSensorValues[i][j] != sensorValues[i][j]){        
         playerX = i;
         playerY = j;
         sensorValues[i][j] = newSensorValues[i][j];
         userPressed = true;
-        draw();
         break;
       }
     }
-  }
-  println("new sensor " + newSensorValues[1][4]);
-  println("old sensor " + sensorValues[1][4]);
+  }  
 }
