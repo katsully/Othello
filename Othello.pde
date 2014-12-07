@@ -158,6 +158,7 @@ void serialEvent(Serial myPort) {
         firstContact = true;     // you've had first contact from the microcontroller
         myPort.write('A');
         myPort.write(board.toStringArduino());       // ask for more, and send values for board
+        println(board.toStringArduino());
         myPort.write('$');
       }
     }
@@ -165,6 +166,7 @@ void serialEvent(Serial myPort) {
     else {
       // split the string at the commas and convert the sections into integers
       int sensorPositions[] = int(split(myString, ','));
+      //println(myString);
       int counter = 0;
       for(int i=0;i<8;i++){
         for(int j=0;j<8;j++){

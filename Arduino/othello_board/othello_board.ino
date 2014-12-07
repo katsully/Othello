@@ -9,7 +9,7 @@ Adafruit_BicolorMatrix matrix = Adafruit_BicolorMatrix();
 
 const int channel2[] = {
   2, 3, 4, 5};
-const int inputPin2 = 6;
+const int inputPin2 = A0;
 
 int sensorValues[8][8];
 
@@ -41,7 +41,8 @@ void loop(){
           counter++;
         }  
       }
-    //}else{
+    }
+    
       // read in the hall effect sensors 
       readSensors();
       // send values of all sensors to Processing
@@ -53,9 +54,9 @@ void loop(){
         }
       }
       Serial.println();
-      delay(300);
+      delay(1500);
     }
-  } 
+   
 }
 
 void lightLED(int row, int col, char color){
@@ -92,11 +93,12 @@ void addSensorValue(int muxNumber, int channelNumber) {
 
 // Used for the handshake method with Processing
 void establishContact() {
-  while(Serial.available() <= 1){
+  while(Serial.available() <= 0){
     Serial.println("hello");  // send a starting message
-    delay(311);
+    delay(300);
   }
 }
+
 
 
 
