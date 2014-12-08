@@ -15,10 +15,12 @@ const int channel1[] = {
 const int channel2[] = {
   2, 3, 4, 5};
 
-//const int channel[] = {
-//  7, 8, 9, 10};
+// MUX 3
+const int channel3[] = {
+  7, 8, 9, 10};
 
-const int inputPin0 = 6;
+// MUX 0
+const int inputPin0 = 12;
 
 // MUX 1
 const int inputPin1 = A1;
@@ -26,10 +28,13 @@ const int inputPin1 = A1;
 // MUX 2
 const int inputPin2 = A0;
 
+// MUX 3
+const int inputPin3 = 6;
+
 int sensorValues[8][8];
 
 int inputPins[] = {
-  inputPin0, inputPin1, inputPin2};
+  inputPin0, inputPin1, inputPin2, inputPin3};
 
 // Data received from the serial port
 char val;
@@ -45,8 +50,13 @@ void setup(){
   pinMode(channel2[1], OUTPUT);
   pinMode(channel2[2], OUTPUT);
   pinMode(channel2[3], OUTPUT);
+  pinMode(channel3[0], OUTPUT);
+  pinMode(channel3[1], OUTPUT);
+  pinMode(channel3[2], OUTPUT);
+  pinMode(channel3[3], OUTPUT);
   pinMode(inputPin1, INPUT_PULLUP);
   pinMode(inputPin2, INPUT_PULLUP);
+  pinMode(inputPin3, INPUT_PULLUP);
 
   //matrix.begin(0x70);
   establishContact();
@@ -65,8 +75,17 @@ void loop(){
   if(Serial.available()){
     val = Serial.read();
     if(val == 'A'){
-      
-      //matrix.clear();
+      //      char pieces[64] = "";
+      //      Serial.readBytesUntil('$',pieces,64);
+      //      //Serial.println(pieces);
+      //      int counter = 0;
+      //      for(int i=0; i<8; i++){
+      //        for(int j=0; j<8; j++){
+      //          lightLED(i,j,pieces[counter]);
+      //          counter++;
+      //        }  
+      //      }
+
       // read in the hall effect sensors 
       readSensors();
       // send values of all sensors to Processing
@@ -80,16 +99,7 @@ void loop(){
       Serial.println();
       delay(1500);
 
-//      char pieces[64] = "";
-//      Serial.readBytesUntil('$',pieces,64);
-//      //Serial.println(pieces);
-//      int counter = 0;
-//      for(int i=0; i<8; i++){
-//        for(int j=0; j<8; j++){
-//          lightLED(i,j,pieces[counter]);
-//          counter++;
-//        }  
-//      }
+
     }
 
 
@@ -116,30 +126,32 @@ void readSensors(){
     for(int thisPin = 0; thisPin < 4; thisPin++) {
       digitalWrite(channel1[thisPin], bitRead(thisChannel, 3-thisPin));
       digitalWrite(channel2[thisPin], bitRead(thisChannel, 3-thisPin));
+      digitalWrite(channel3[thisPin], bitRead(thisChannel, 3-thisPin));
     }
     addSensorValue(1,thisChannel);
     addSensorValue(2,thisChannel);
+    addSensorValue(3,thisChannel);
   }
 }
 
 void addSensorValue(int muxNumber, int channelNumber) {
   if(channelNumber < 8) {
     sensorValues[(channelNumber-7)*-1][muxNumber*2] = digitalRead(inputPins[muxNumber]);
-//    if(digitalRead(inputPins[muxNumber])==0){
-//      Serial.print("mux number: ");
-//      Serial.print(muxNumber);
-//      Serial.print("    channel number:   ");
-//      Serial.println(channelNumber);
-//    }
+    //    if(digitalRead(inputPins[muxNumber])==0){
+    //      Serial.print("mux number: ");
+    //      Serial.print(muxNumber);
+    //      Serial.print("    channel number:   ");
+    //      Serial.println(channelNumber);
+    //    }
   } 
   else {
     sensorValues[channelNumber-8][muxNumber*2+1] = digitalRead(inputPins[muxNumber]);
-//    if(digitalRead(inputPins[muxNumber])==0){
-//      Serial.print("mux number: ");
-//      Serial.print(muxNumber);
-//      Serial.print("    channel number:   ");
-//      Serial.println(channelNumber);
-//    }
+    //    if(digitalRead(inputPins[muxNumber])==0){
+    //      Serial.print("mux number: ");
+    //      Serial.print(muxNumber);
+    //      Serial.print("    channel number:   ");
+    //      Serial.println(channelNumber);
+    //    }
   }   
 }
 
@@ -150,6 +162,7 @@ void establishContact() {
     delay(300);
   }
 }
+
 
 
 

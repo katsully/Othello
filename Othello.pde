@@ -18,35 +18,35 @@ boolean userPressed = false;
 
 int[][] sensorValues = { 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
   , 
   {
-    0, 0, 1, 1, 1, 1, 0, 0
+    0, 0, 1, 1, 1, 1, 1, 1
   }
 };
 int[][] newSensorValues = new int[8][8];
@@ -158,7 +158,7 @@ void serialEvent(Serial myPort) {
         firstContact = true;     // you've had first contact from the microcontroller
         myPort.write('A');
         myPort.write(board.toStringArduino());       // ask for more, and send values for board
-        //println(board.toStringArduino());
+        println(board.toStringArduino());
         myPort.write('$');
       }
     }
