@@ -9,27 +9,27 @@ Adafruit_BicolorMatrix matrix = Adafruit_BicolorMatrix();
 
 // MUX 1
 const int channel1[] = {
-  A5, A4, A3, A2};
+  2,3,4,5};
 
 // MUX 2
 const int channel2[] = {
-  2, 3, 4, 5};
+  24,25,26,27};
 
 // MUX 3
 const int channel3[] = {
-  7, 8, 9, 10};
+  36,37,38,39};
 
 // MUX 0
 const int inputPin0 = 12;
 
 // MUX 1
-const int inputPin1 = A1;
+const int inputPin1 = A7;
 
 // MUX 2
-const int inputPin2 = A0;
+const int inputPin2 = A1;
 
 // MUX 3
-const int inputPin3 = 6;
+const int inputPin3 = A0;
 
 int sensorValues[8][8];
 
@@ -58,7 +58,7 @@ void setup(){
   pinMode(inputPin2, INPUT_PULLUP);
   pinMode(inputPin3, INPUT_PULLUP);
 
-  //matrix.begin(0x70);
+  matrix.begin(0x70);
   establishContact();
 
   //  for(int thisPin = 0; thisPin < 4; thisPin++) {
@@ -75,16 +75,15 @@ void loop(){
   if(Serial.available()){
     val = Serial.read();
     if(val == 'A'){
-      //      char pieces[64] = "";
-      //      Serial.readBytesUntil('$',pieces,64);
-      //      //Serial.println(pieces);
-      //      int counter = 0;
-      //      for(int i=0; i<8; i++){
-      //        for(int j=0; j<8; j++){
-      //          lightLED(i,j,pieces[counter]);
-      //          counter++;
-      //        }  
-      //      }
+      char pieces[64] = "";
+      Serial.readBytesUntil('$',pieces,64);
+      int counter = 0;
+      for(int i=0; i<8; i++){
+        for(int j=0; j<8; j++){
+          lightLED(i,j,pieces[counter]);
+          counter++;
+        }  
+      }
 
       // read in the hall effect sensors 
       readSensors();
@@ -107,19 +106,19 @@ void loop(){
 
 }
 
-//void lightLED(int row, int col, char color){
-//  //  Serial.print(row);
-//  //  Serial.print(col);
-//  //  Serial.println(color);
-//  if(color == '1'){
-//    //Serial.println(row, col);
-//    matrix.drawPixel(row, col, LED_GREEN);
-//  } 
-//  else if(color == '2') {
-//    matrix.drawPixel(row, col, LED_RED);
-//  }
-//  matrix.writeDisplay();
-//}
+void lightLED(int row, int col, char color){
+  //  Serial.print(row);
+  //  Serial.print(col);
+  //  Serial.println(color);
+  if(color == '1'){
+    //Serial.println(row, col);
+    matrix.drawPixel(row, col, LED_GREEN);
+  } 
+  else if(color == '2') {
+    matrix.drawPixel(row, col, LED_RED);
+  }
+  matrix.writeDisplay();
+}
 
 void readSensors(){
   for(int thisChannel = 0; thisChannel < 16; thisChannel++) {
@@ -162,6 +161,7 @@ void establishContact() {
     delay(300);
   }
 }
+
 
 
 
