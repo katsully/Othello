@@ -52,7 +52,7 @@ int[][] sensorValues = {
 int[][] newSensorValues = new int[8][8];
 
 void setup() {
-  String portName = "COM4";
+  String portName = "COM6";
   myPort = new Serial(this, portName, 9600);
   // read incoming bytes to a buffer until you get a linefedd(ASCII 00)
   myPort.bufferUntil('\n');
