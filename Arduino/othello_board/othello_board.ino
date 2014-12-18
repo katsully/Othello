@@ -7,29 +7,34 @@
 //
 Adafruit_BicolorMatrix matrix = Adafruit_BicolorMatrix();
 
+// MUX 0
+const int channel0[] = {
+  24, 25, 26, 27};
+
 // MUX 1
 const int channel1[] = {
-  2,3,4,5};
+  30, 31, 32, 33};
 
 // MUX 2
 const int channel2[] = {
-  24,25,26,27};
-
+  36, 37, 38, 39};
+  
 // MUX 3
 const int channel3[] = {
-  36,37,38,39};
+  48, 49, 50, 51};
+
 
 // MUX 0
-const int inputPin0 = 12;
+const int inputPin0 = A0;
 
 // MUX 1
-const int inputPin1 = A7;
+const int inputPin1 = A1;
 
 // MUX 2
-const int inputPin2 = A1;
+const int inputPin2 = A2;
 
 // MUX 3
-const int inputPin3 = A0;
+const int inputPin3 = A3;
 
 int sensorValues[8][8];
 
@@ -42,6 +47,10 @@ char val;
 void setup(){
   Serial.begin(9600);
 
+  pinMode(channel0[0], OUTPUT);
+  pinMode(channel0[1], OUTPUT);
+  pinMode(channel0[2], OUTPUT);
+  pinMode(channel0[3], OUTPUT);
   pinMode(channel1[0], OUTPUT);
   pinMode(channel1[1], OUTPUT);
   pinMode(channel1[2], OUTPUT);
@@ -54,6 +63,7 @@ void setup(){
   pinMode(channel3[1], OUTPUT);
   pinMode(channel3[2], OUTPUT);
   pinMode(channel3[3], OUTPUT);
+  pinMode(inputPin0, INPUT_PULLUP);
   pinMode(inputPin1, INPUT_PULLUP);
   pinMode(inputPin2, INPUT_PULLUP);
   pinMode(inputPin3, INPUT_PULLUP);
@@ -123,13 +133,17 @@ void lightLED(int row, int col, char color){
 void readSensors(){
   for(int thisChannel = 0; thisChannel < 16; thisChannel++) {
     for(int thisPin = 0; thisPin < 4; thisPin++) {
+      digitalWrite(channel0[thisPin], bitRead(thisChannel, 3-thisPin));
       digitalWrite(channel1[thisPin], bitRead(thisChannel, 3-thisPin));
       digitalWrite(channel2[thisPin], bitRead(thisChannel, 3-thisPin));
       digitalWrite(channel3[thisPin], bitRead(thisChannel, 3-thisPin));
+      
     }
+    addSensorValue(0,thisChannel);
     addSensorValue(1,thisChannel);
     addSensorValue(2,thisChannel);
     addSensorValue(3,thisChannel);
+
   }
 }
 
